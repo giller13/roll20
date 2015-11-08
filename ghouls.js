@@ -19,9 +19,12 @@ var Ghouls = Ghouls || {
     LoadPageGhouls: function() {
       // Decided to do this at start-up so I have a list of ghouls on a page
       // Should consider writing to state?
-        var ghouls = filterObjs(function(obj) {
+      // Also, filter already goes over the entire list one time
+      // Is there a single property we can set on tokens to mark them with a tag?
+      var ghouls = filterObjs(function(obj) {
             return (obj.get("_pageid") == Campaign().get("playerpageid") &&
             obj.get("_type") == "graphic" &&
+            obj.get("_subtype") == "token" &&
             obj.get("name").toLowerCase().indexOf("ghoul") > -1);
         });
         _.each(ghouls, function(ghoul) {
