@@ -6,8 +6,27 @@ var Ghouls = Ghouls || {
       if(mode == "on") {
         Ghouls.chatterInterval = setInterval(function () {
           var slot = Math.floor(Math.random() * 4);
-          var text = Ghouls.ghoulChatter[slot];
-          sendChat("Ghoul", text);
+          var speechText = Ghouls.ghoulChatter[slot];
+          var ghoulSlot = Math.floor(Math.random() * Ghouls.pageGhouls.length);
+          var ghoul = Ghouls.pageGhouls[ghoulSlot];
+          sendChat("Ghoul", speechText);
+          var textObject = createObj("text", {
+            _pageid: Campaign().get("playerpageid"),
+            layer: "objects",
+            text: speechText,
+            color: "rgb(255, 0, 0)",
+            font_size: 22,
+            top: ghoul.get("top"),
+            left: ghoul.get("left")
+          });
+          // Function prototype to remove the text
+          var removeFunc = function() {
+            this.remove();
+          }
+          // Set a timeout to remove the text from the screen
+          // Use bind to bind the textObject returned from create
+          // to this instance of the removeFunc.
+          setTimeout(removeFunc.bind(textObject), 2000);
         }, interval);
       }
       else if(mode == "off") {
